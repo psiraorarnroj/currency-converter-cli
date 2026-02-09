@@ -103,6 +103,25 @@ function convertCurrency(amount, from, to) {
   return result;
 }
 
+// Output formatter
+function formatOutput(amount, from, result, to) {
+  // Format numbers with appropriate decimal places (up to 4, remove trailing zeros)
+  const formatNumber = (num) => {
+    // Convert to string with up to 4 decimal places
+    let formatted = num.toFixed(4);
+    // Remove trailing zeros
+    formatted = formatted.replace(/\.?0+$/, '');
+    return formatted;
+  };
+
+  // Ensure currency codes are uppercase
+  const fromUpper = from.toUpperCase();
+  const toUpper = to.toUpperCase();
+
+  // Build output string in format: <amount> <FROM> = <result> <TO>
+  return `${formatNumber(amount)} ${fromUpper} = ${formatNumber(result)} ${toUpper}`;
+}
+
 // Export for testing (if needed)
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
@@ -111,6 +130,7 @@ if (typeof module !== 'undefined' && module.exports) {
     handleError,
     parseArguments,
     validateInput,
-    convertCurrency
+    convertCurrency,
+    formatOutput
   };
 }
