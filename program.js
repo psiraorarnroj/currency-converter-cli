@@ -122,6 +122,46 @@ function formatOutput(amount, from, result, to) {
   return `${formatNumber(amount)} ${fromUpper} = ${formatNumber(result)} ${toUpper}`;
 }
 
+// Main program flow
+function main() {
+  // Get command-line arguments (skip first 2: node and script path)
+  const args = process.argv.slice(2);
+
+  // Handle argument count errors
+  if (args.length !== 4) {
+    handleError('Usage: node program.js <amount> <from_currency> to <to_currency>');
+    return;
+  }
+
+  // Parse arguments
+  const parsed = parseArguments(args);
+
+  // Handle format errors (third arg not "to" or invalid amount)
+  if (!parsed) {
+    handleError('Invalid format. Expected: <amount> <from_currency> to <to_currency>');
+    return;
+  }
+
+  // Validate input
+  const validation = validateInput(parsed);
+  if (!validation.valid) {
+    handleError(validation.error);
+    return;
+  }
+
+  // Perform conversion
+  const result = convertCurrency(parsed.amount, parsed.fromCurrency, parsed.toCurrency);
+
+  // Format output
+  const output = formatOutput(parsed.amount, parsed.fromCurrency, result, parsed.toCurrency);
+
+  // Write to stdout
+  console.log(output);
+
+  // Exit with code 0 on success
+  process.exit(0);
+}
+
 // Export for testing (if needed)
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
@@ -131,6 +171,12 @@ if (typeof module !== 'undefined' && module.exports) {
     parseArguments,
     validateInput,
     convertCurrency,
-    formatOutput
+    formatOutput,
+    main
   };
+}
+
+// Program entry point - call main() when script is executed directly
+if (require.main === module) {
+  main();
 }
