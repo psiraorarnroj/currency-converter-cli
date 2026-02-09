@@ -144,39 +144,43 @@ test('Property 6: Precision Maintenance', () => {
       (amount, fromCurrency, toCurrency) => {
         const result = convertCurrency(amount, fromCurrency, toCurrency);
         
+        // The result should be a valid number
+        assert.ok(typeof result === 'number', 'Result should be a number');
+        assert.ok(!isNaN(result), 'Result should not be NaN');
+        assert.ok(isFinite(result), 'Result should be finite');
+        
         // Format the result with formatOutput to check precision
         const output = formatOutput(amount, fromCurrency, result, toCurrency);
         const parts = output.split(' ');
         const resultStr = parts[3];
         
-        // If the result has a decimal point, check precision
+        // Parse the formatted result back to a number
+        const formattedResult = parseFloat(resultStr);
+        
+        // The formatted result should be close to the actual result
+        // We allow for rounding to 4 decimal places
+        const tolerance = Math.max(Math.abs(result) * 1e-4, 1e-4);
+        
+        assert.ok(
+          Math.abs(result - formattedResult) <= tolerance,
+          `Precision not maintained: original=${result}, formatted=${formattedResult}, diff=${Math.abs(result - formattedResult)}`
+        );
+        
+        // If the result has more than 4 significant decimal places,
+        // the formatted output should show up to 4 decimal places (without trailing zeros)
         if (resultStr.includes('.')) {
           const decimalPart = resultStr.split('.')[1];
-          
-          // The formatted output should have removed trailing zeros,
-          // but the underlying result should maintain precision
-          // Check that the result value itself has sufficient precision
-          const resultFixed4 = parseFloat(result.toFixed(4));
-          const tolerance = Math.abs(result) * 1e-4;
-          
-          // The result should be representable with at least 4 decimal places
           assert.ok(
-            Math.abs(result - resultFixed4) <= tolerance || result === resultFixed4,
-            `Precision not maintained: result=${result}, fixed4=${resultFixed4}`
+            decimalPart.length <= 4,
+            `Formatted result should have at most 4 decimal places: ${resultStr}`
+          );
+          
+          // Should not have trailing zeros
+          assert.ok(
+            !resultStr.endsWith('0') || !resultStr.includes('.'),
+            `Formatted result should not have trailing zeros: ${resultStr}`
           );
         }
-        
-        // Verify that formatOutput can represent numbers with up to 4 decimal places
-        // by checking that small differences are preserved
-        const testAmount = 1.23456789;
-        const testResult = convertCurrency(testAmount, fromCurrency, toCurrency);
-        const testOutput = formatOutput(testAmount, fromCurrency, testResult, toCurrency);
-        
-        // The output should contain decimal representation
-        assert.ok(
-          typeof testOutput === 'string' && testOutput.length > 0,
-          'Output should be a non-empty string'
-        );
       }
     ),
     { numRuns: 100 }
