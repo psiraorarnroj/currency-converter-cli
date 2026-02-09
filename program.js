@@ -48,12 +48,52 @@ function parseArguments(args) {
   };
 }
 
+// Input validator
+function validateInput(parsed) {
+  // Check if amount is a valid positive number
+  if (typeof parsed.amount !== 'number' || isNaN(parsed.amount)) {
+    return {
+      valid: false,
+      error: 'Invalid amount. Please provide a positive number.'
+    };
+  }
+
+  // Check if amount is non-negative
+  if (parsed.amount < 0) {
+    return {
+      valid: false,
+      error: 'Invalid amount. Please provide a positive number.'
+    };
+  }
+
+  // Check if fromCurrency is supported
+  if (!SUPPORTED_CURRENCIES.includes(parsed.fromCurrency)) {
+    return {
+      valid: false,
+      error: `Unsupported currency: ${parsed.fromCurrency}. Supported currencies: ${SUPPORTED_CURRENCIES.join(', ')}`
+    };
+  }
+
+  // Check if toCurrency is supported
+  if (!SUPPORTED_CURRENCIES.includes(parsed.toCurrency)) {
+    return {
+      valid: false,
+      error: `Unsupported currency: ${parsed.toCurrency}. Supported currencies: ${SUPPORTED_CURRENCIES.join(', ')}`
+    };
+  }
+
+  return {
+    valid: true
+  };
+}
+
 // Export for testing (if needed)
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     SUPPORTED_CURRENCIES,
     RATES_TO_USD,
     handleError,
-    parseArguments
+    parseArguments,
+    validateInput
   };
 }
