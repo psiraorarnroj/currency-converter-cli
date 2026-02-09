@@ -6,9 +6,9 @@ const SUPPORTED_CURRENCIES = ['THB', 'USD', 'EUR', 'BTC'];
 // Exchange rates relative to USD as base currency
 const RATES_TO_USD = {
   'USD': 1.0,
-  'THB': 0.027,      // 1 THB = 0.027 USD
-  'EUR': 1.10,       // 1 EUR = 1.10 USD
-  'BTC': 45000.0     // 1 BTC = 45000 USD
+  'THB': 0.032,      // 1 THB = 0.032 USD
+  'EUR': 1.19,       // 1 EUR = 1.19 USD
+  'BTC': 69000.0     // 1 BTC = 69000 USD
 };
 
 // Basic error handling utility

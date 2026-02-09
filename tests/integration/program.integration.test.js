@@ -43,7 +43,7 @@ test('Integration: Convert 1000 THB to USD - valid input', async () => {
   const result = await executeProgram(['1000', 'THB', 'to', 'USD']);
   
   assert.strictEqual(result.exitCode, 0, 'Exit code should be 0 for success');
-  assert.match(result.stdout, /^1000 THB = 27 USD$/, 'Output should match expected format');
+  assert.match(result.stdout, /^1000 THB = 32 USD$/, 'Output should match expected format');
   assert.strictEqual(result.stderr, '', 'stderr should be empty for successful execution');
 });
 
@@ -51,7 +51,7 @@ test('Integration: Convert 50 USD to EUR - valid input', async () => {
   const result = await executeProgram(['50', 'USD', 'to', 'EUR']);
   
   assert.strictEqual(result.exitCode, 0, 'Exit code should be 0 for success');
-  assert.match(result.stdout, /^50 USD = 45\.4545 EUR$/, 'Output should match expected format');
+  assert.match(result.stdout, /^50 USD = 42\.0168 EUR$/, 'Output should match expected format');
   assert.strictEqual(result.stderr, '', 'stderr should be empty for successful execution');
 });
 
@@ -59,7 +59,7 @@ test('Integration: Convert 0.01 BTC to THB - valid input', async () => {
   const result = await executeProgram(['0.01', 'BTC', 'to', 'THB']);
   
   assert.strictEqual(result.exitCode, 0, 'Exit code should be 0 for success');
-  assert.match(result.stdout, /^0\.01 BTC = 16666\.6667 THB$/, 'Output should match expected format');
+  assert.match(result.stdout, /^0\.01 BTC = 21562\.5 THB$/, 'Output should match expected format');
   assert.strictEqual(result.stderr, '', 'stderr should be empty for successful execution');
 });
 
@@ -67,7 +67,7 @@ test('Integration: Convert with lowercase currency codes', async () => {
   const result = await executeProgram(['100', 'usd', 'to', 'eur']);
   
   assert.strictEqual(result.exitCode, 0, 'Exit code should be 0 for success');
-  assert.match(result.stdout, /^100 USD = 90\.9091 EUR$/, 'Output should handle case-insensitive input');
+  assert.match(result.stdout, /^100 USD = 84\.0336 EUR$/, 'Output should handle case-insensitive input');
   assert.strictEqual(result.stderr, '', 'stderr should be empty for successful execution');
 });
 
