@@ -1,0 +1,16 @@
+{
+  "name": "currency-converter-cli",
+  "version": "1.0.0",
+  "description": "CLI currency converter with property-based testing",
+  "main": "program.js",
+  "scripts": {
+    "test": "node --test",
+    "test:watch": "node --test --watch"
+  },
+  "keywords": ["currency", "converter", "cli"],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "fast-check": "^3.15.0"
+  }
+}

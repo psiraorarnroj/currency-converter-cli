@@ -87,6 +87,22 @@ function validateInput(parsed) {
   };
 }
 
+// Currency converter
+function convertCurrency(amount, from, to) {
+  // Handle identity case (same currency)
+  if (from === to) {
+    return amount;
+  }
+
+  // Convert from source currency to USD
+  const amountInUSD = amount * RATES_TO_USD[from];
+
+  // Convert from USD to target currency
+  const result = amountInUSD / RATES_TO_USD[to];
+
+  return result;
+}
+
 // Export for testing (if needed)
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
@@ -94,6 +110,7 @@ if (typeof module !== 'undefined' && module.exports) {
     RATES_TO_USD,
     handleError,
     parseArguments,
-    validateInput
+    validateInput,
+    convertCurrency
   };
 }
